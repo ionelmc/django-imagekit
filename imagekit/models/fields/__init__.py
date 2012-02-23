@@ -71,8 +71,14 @@ class ImageSpecField(object):
         self.image_field = image_field
         self.storage = storage
         self.cache_to = cache_to
-        self.image_cache_backend = image_cache_backend or \
-                get_default_image_cache_backend()
+        self._image_cache_backend = image_cache_backend
+
+    @property
+    def image_cache_backend(self):
+        if not self._image_cache_backend:
+            return get_default_image_cache_backend()
+        else:
+            return self._image_cache_backend
 
     def contribute_to_class(self, cls, name):
         setattr(cls, name, ImageSpecFileDescriptor(self, name))
