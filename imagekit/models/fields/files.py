@@ -59,9 +59,9 @@ class ImageSpecFieldFile(ImageFieldFile):
         return ret
 
     def validate(self):
-        logger.debug("ImageSpecFieldFile.validate() called for %s.", self, self.field)
+        logger.debug("ImageSpecFieldFile.validate() called for %s.", self)
         ret = self.field.image_cache_backend.validate(self)
-        logger.info("ImageSpecFieldFile.validate() returned %s for %s.", self, ret, self.field)
+        logger.info("ImageSpecFieldFile.validate() returned %s for %s.", ret, self)
         return ret
 
     def generate(self, save=True):
