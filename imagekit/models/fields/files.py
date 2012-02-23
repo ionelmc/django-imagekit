@@ -1,3 +1,6 @@
+from logging import getLogger
+logger = getLogger(__name__)
+
 import os
 import datetime
 
@@ -44,13 +47,22 @@ class ImageSpecFieldFile(ImageFieldFile):
     file = property(_get_file, ImageFieldFile._set_file, ImageFieldFile._del_file)
 
     def clear(self):
-        return self.field.image_cache_backend.clear(self)
+        logger.debug("ImageSpecFieldFile.clear() called for %s.", self)
+        ret = self.field.image_cache_backend.clear(self)
+        logger.info("ImageSpecFieldFile.clear() returned %s for %s.", ret, self)
+        return ret
 
     def invalidate(self):
-        return self.field.image_cache_backend.invalidate(self)
+        logger.debug("ImageSpecFieldFile.invalidate() called for %s.", self)
+        ret = self.field.image_cache_backend.invalidate(self)
+        logger.info("ImageSpecFieldFile.invalidate() returned %s for %s.", ret, self)
+        return ret
 
     def validate(self):
-        return self.field.image_cache_backend.validate(self)
+        logger.debug("ImageSpecFieldFile.validate() called for %s.", self, self.field)
+        ret = self.field.image_cache_backend.validate(self)
+        logger.info("ImageSpecFieldFile.validate() returned %s for %s.", self, ret, self.field)
+        return ret
 
     def generate(self, save=True):
         """
@@ -58,8 +70,12 @@ class ImageSpecFieldFile(ImageFieldFile):
         the content of the result, ready for saving.
 
         """
-        return self.field.generator.generate_file(self.name, self.source_file,
+        logger.debug("ImageSpecFieldFile.generate(save=%s) called for %s.", save, self)
+        ret = self.field.generator.generate_file(self.name, self.source_file,
                 save)
+        logger.info("ImageSpecFieldFile.generate(save=%s) returned %s for %s.", save, ret, self)
+        return ret
+
 
     @property
     def url(self):
@@ -73,6 +89,8 @@ class ImageSpecFieldFile(ImageFieldFile):
         property removed.
 
         """
+        logger.debug("ImageSpecFieldFile.delete(save=%s) called for %s.", save, self)
+
         # Clear the image dimensions cache
         if hasattr(self, '_dimensions_cache'):
             del self._dimensions_cache
